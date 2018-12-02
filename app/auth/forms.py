@@ -14,7 +14,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators = [DataRequired(), Length(1,64), Email()])
     username = StringField('Username', validators=[DataRequired(), Length(1, 64),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,'Usernames must have only letters, numbers, dots or ' 'underscores')])
+        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,'Usernames must have only letters, numbers, dots or underscores')])
     password = PasswordField('Password', validators=[DataRequired(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
     submit = SubmitField('Register')
@@ -32,3 +32,13 @@ class ChangePasswordForm(FlaskForm):
     password = PasswordField('New password', validators=[DataRequired(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm new password',validators=[DataRequired()])
     submit = SubmitField('Update Password')
+
+class PasswordResetRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
+    submit = SubmitField('Reset Password')
+
+
+class PasswordResetForm(FlaskForm):
+    password = PasswordField('New Password', validators=[DataRequired(), EqualTo('password2', message='Passwords must match')])
+    password2 = PasswordField('Confirm password', validators=[DataRequired()])
+    submit = SubmitField('Reset Password')
