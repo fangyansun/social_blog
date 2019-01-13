@@ -9,7 +9,7 @@ from . import db, login_manager
 
 class Permission:
     FOLLOW = 1
-    COMMNET = 2
+    COMMENT = 2
     WRITE = 4
     MODERATE = 8
     ADMIN = 16
