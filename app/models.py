@@ -135,6 +135,7 @@ class User(UserMixin, db.Model):
             return False
         self.confirmed = True
         db.session.add(self)
+        db.session.commit()
         return True
 
     def generate_reset_token(self, expiration=3600):
@@ -153,6 +154,7 @@ class User(UserMixin, db.Model):
             return False
         user.password = new_password
         db.session.add(user)
+        db.session.commit()
         return True
 
     def generate_email_change_token(self, new_email, expiration=3600):
@@ -175,6 +177,7 @@ class User(UserMixin, db.Model):
         self.email = new_email
         self.avatar_hash = self.gravatar_hash()
         db.session.add(self)
+        db.session.commit()
         return True
 
     def can(self, perm):
@@ -186,6 +189,7 @@ class User(UserMixin, db.Model):
     def ping(self):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
+        db.session.commit()
 
     def gravatar_hash(self):
         return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
@@ -197,13 +201,16 @@ class User(UserMixin, db.Model):
 
     def follow(self, user):
         if not self.is_following(user):
-            f = Follow(followed=user)
-            self.followed.append(f)
+            f = Follow(follower=self, followed=user)
+            db.session.add(f)
+            db.session.commit()
+
 
     def unfollow(self, user):
         f= self.followed.filter_by(followed_id=user.id).first()
         if f:
-            self.followed.remove(f)
+            db.session.delete(f)
+            db.session.commit()
 
     def is_following(self, user):
         if user.id is None:
