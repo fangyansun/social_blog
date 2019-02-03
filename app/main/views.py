@@ -18,9 +18,13 @@ def server_shutdown():
     shutdown()
     return 'Shutting down...'
 
-
-@main.route('/', methods=['GET', 'POST'])
+@main.route('/')
 def index():
+    return render_template('index.html')
+
+
+@main.route('/articles', methods=['GET', 'POST'])
+def articles():
     form = PostForm()
     if current_user.can(Permission.WRITE) and form.validate_on_submit():
         post = Post(body=form.body.data, author=current_user._get_current_object())
@@ -37,7 +41,7 @@ def index():
         query = Post.query
     pagination = query.order_by(Post.timestamp.desc()).paginate(page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('index.html', form=form, posts=posts, show_followed = show_followed, pagination=pagination)
+    return render_template('articles.html', form=form, posts=posts, show_followed = show_followed, pagination=pagination)
 
 
 @main.route('/user/<username>')

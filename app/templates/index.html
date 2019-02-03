@@ -1,35 +1,60 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 {% import "_macros.html" as macros %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}Flasky - Comment Moderation{% endblock %}
 
 {% block page_content %}
-  <div class="page-header">
-    <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
-  </div>
-  <div>
-    {% if current_user.can(Permission.WRITE) %}
-      {{ wtf.quick_form(form) }}
-    {% endif %}
-  </div>
-  <div class="post-tabs">
-    <ul class="nav nav-tabs">
-        <li{% if not show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_all') }}">All</a></li>
-        {% if current_user.is_authenticated %}
-        <li{% if show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_followed') }}">Followers</a></li>
-        {% endif %}
-    </ul>
-    {% include '_posts.html' %}
-  </div>
-  {% if pagination %}
-    <div class="pagination">
-      {{ macros.pagination_widget(pagination, '.index')}}
-    </div>
-  {% endif %}
-{% endblock %}
+  <div class="container-fluid">
+   <div class="row">
+     <div class="col-md-9" role="main">
+       <div id="myCarousel" class="carousel slide" data-ride="carousel">
+         <ol class="carousel-indicators">
+           <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+           <li data-target="#myCarousel" data-slide-to="1"></li>
+           <li data-target="#myCarousel" data-slide-to="2"></li>
+           <li data-target="#myCarousel" data-slide-to="3"></li>
+         </ol>
 
-{% block scripts %}
-{{ super() }}
-{{ pagedown.include_pagedown() }}
+         <div class="carousel-inner">
+           <div class="item active">
+             <img src="static/images/FangyanVincent0.jpg" class="img-rounded" alt="">
+           </div>
+           <div class="item">
+             <img src="static/images/FangyanVincent1.jpg" class="img-rounded" alt="Chicago">
+           </div>
+           <div class="item">
+             <img src="static/images/FangyanVincent2.jpg" class="img-rounded" alt="New York">
+           </div>
+           <div class="item">
+             <img src="static/images/FangyanVincent3.jpg" class="img-rounded" alt="New York">
+           </div>
+         </div>
+       </div>
+
+     </div>
+
+     <div class="col-md-3" role="complementary">
+       <section>
+         <h3>Recent articles:</h3>
+         <div class="articles list-group">
+           <a href="#" class="list-group-item">First article</a>
+           <a href="#" class="list-group-item">Second article</a>
+           <a href="#" class="list-group-item">Third article</a>
+           <a href="#" class="list-group-item">Fourth article</a>
+           <a href="#" class="list-group-item">Fifth article</a>
+         </div>
+       </section>
+       <section>
+         <h3>Recent projects:</h3>
+         <div class="articles list-group">
+           <a href="#" class="list-group-item">First project</a>
+           <a href="#" class="list-group-item">Second project</a>
+           <a href="#" class="list-group-item">Third project</a>
+           <a href="#" class="list-group-item">Fourth project</a>
+           <a href="#" class="list-group-item">Fifth project</a>
+         </div>
+       </section>
+     </div>
+   </div>
+  </div>
 {% endblock %}
