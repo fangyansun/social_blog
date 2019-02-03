@@ -1,8 +1,9 @@
 from flask import render_template, redirect, url_for, abort, flash, request, current_app, make_response
 from flask_login import login_required, current_user
 from . import main
-from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm, ContactForm
 from .. import db
+from ..email import send_email
 from ..models import Role, User, Permission, Post, Comment
 from ..decorators import admin_required, permission_required
 
@@ -17,7 +18,7 @@ def server_shutdown():
     shutdown()
     return 'Shutting down...'
 
-    
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
     form = PostForm()
@@ -249,3 +250,29 @@ def moderate_disable(id):
     db.session.commit()
     return redirect(url_for('.moderate',
                             page=request.args.get('page', 1, type=int)))
+
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.location = form.location.data
+        current_user.about_me = form.about_me.data
+        db.session.add(current_user._get_current_object())
+        db.session.commit()
+        flash('Your profile has been updated.')
+        return redirect(url_for('.user', username=current_user.username))
+    form.name.data = current_user.name
+    form.location.data = current_user.location
+    form.about_me.data = current_user.about_me
+    return render_template('edit_profile.html', form=form)
+
+
+@main.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    if form.validate_on_submit():
+        flash("Thank you for your message. We will come up to you soon.")
+        mail_to = current_app.config['BLOG_ADMIN']
+        message = form.body.data
+        send_email(mail_to, 'Message From Users', 'mail/contact', message=message)
+        return redirect(url_for('.contact'))
+    return render_template('contact.html', form = form)

@@ -1,3 +1,13 @@
+.navbar {
+  background-color: rgb(39, 49, 49);
+}
+
+.navbar-brand {
+  font-family: airstreamregular;
+  font-weight: bold;
+  font-size: 24px;
+}
+
 .profile-thumbnail {
     position: absolute;
 }
@@ -104,4 +114,31 @@ div.flask-pagedown-preview h3 {
 }
 .table.followers tr {
     border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-image-container{
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-image-frame {
+  position: relative;
+  text-align: center;
+  transition: transform 333ms;
+}
+
+.profile-image{
+  display: inline-block;
+  min-width: 300px;
+  max-width: 500px;
+  border: 1px solid rgb(100%, 100%, 100%);
+  border: 1px solid rgba(100%, 100%, 100%, 0.8);
+  margin: 4px;
+  padding: 6px;
+}
+
+.contact_form{
+  margin-top: 50px;
 }

@@ -48,3 +48,7 @@ class PostForm(FlaskForm):
 class CommentForm(FlaskForm):
     body = StringField('Enter your comment', validators = [DataRequired()])
     submit = SubmitField('Submit')
+
+class ContactForm(FlaskForm):
+    body = StringField("What to send us a message?", validators=[DataRequired()])
+    submit = SubmitField('Submit')
