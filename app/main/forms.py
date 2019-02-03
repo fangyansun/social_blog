@@ -50,5 +50,5 @@ class CommentForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class ContactForm(FlaskForm):
-    body = StringField("What to send us a message?", validators=[DataRequired()])
+    body = StringField("Want to send us a message?", validators=[DataRequired()])
     submit = SubmitField('Submit')
