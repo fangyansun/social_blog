@@ -76,8 +76,8 @@ class SeleniumTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_admin_home_page(self):
-        # navigate to home page
+    def test_admin_posts_page(self):
+        # navigate to posts page
         self.client.get('http://localhost:5000/')
         self.assertTrue(re.search('Hello,\s+Stranger!',
                                   self.client.page_source))
