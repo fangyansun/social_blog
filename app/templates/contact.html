@@ -7,32 +7,29 @@
       <div class="col-md-6" role="main">
 
         <div class="profile-container">
-          <div class="profile-image-frame">
             <img class="profile-image" data-image-role="target" src="static/images/Fangyan1.jpg" class="img-rounded" alt="">
-          </div>
-          <div class="profile-text">
-            <p> Fangyan comes from China. At the age of 19, she got an opportunity to come to France for studies. Then comes her 8-year adventure in France and some other countries.</p>
-            <p> Hobbies: singing, cycling, coding</p>
+            <p align="left"> Fangyan comes from China. At the age of 19, she got an opportunity to come to France for studies. Then comes her 8-year adventure in France and some other countries.</p>
+            <p align="left"> Hobbies: singing, cycling, coding</p>
             <a href= "https://www.linkedin.com/in/fangyan-sun-ab529587/"> Linkedin </a>
-          </div>
         </div>
       </div>
 
-      <div class="col-md-6" role="">
-        <div class="profile-image-container">
-          <div class="profile-image-frame">
+      <div class="col-md-6" role="main">
+        <div class="profile-container">
             <img class="profile-image" data-image-role="target" src="static/images/Vincent1.jpg" alt="">
-          </div>
-          <div class="profile-text">
-            <p> Vincent comes from France. XXX</p>
-            <p> Hobbies: Judo, football, coding</p>
+            <p align="left"> Vincent comes from France. XXX</p>
+            <p align="left"> Hobbies: Judo, football, coding</p>
             <a href= "https://www.linkedin.com/in/vincent-henric-6090665b/"> Linkedin </a>
-          </div>
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="contact_form">
+        {{ wtf.quick_form(form) }}
+      </div>
+    </div>
+
   </div>
-
-
 
 {% endblock %}
