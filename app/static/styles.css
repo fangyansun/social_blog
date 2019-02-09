@@ -117,10 +117,7 @@ div.flask-pagedown-preview h3 {
 }
 
 .profile-image{
-  min-width: 100px;
-  max-width: 500px;
-  margin: 2px;
-  padding: 6px;
+  width: 95%;
 }
 
 div.contact_form{

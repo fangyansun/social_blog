@@ -105,7 +105,7 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.email == current_app.config['BLOG_ADMIN']:
+            if self.email == current_app.config['HomeTech_ADMIN']:
                 self.role = Role.query.filter_by(name='Administrator').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
@@ -343,7 +343,7 @@ class Comment(db.Model):
         if body is None or body == '':
             raise ValidationError('comment does not have a body')
         return Comment(body=body)
-        
+
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
 
 

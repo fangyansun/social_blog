@@ -1,11 +1,12 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}HomeTech{% endblock %}
 
 {% block head %}
   {{ super() }}
     <link rel="shortcut icon" href="{{ url_for('static', filename='blog.jpg') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='blog.jpg') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 
 {% endblock %}

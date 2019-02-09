@@ -275,7 +275,7 @@ def contact():
     form = ContactForm()
     if form.validate_on_submit():
         flash("Thank you for your message. We will come up to you soon.")
-        mail_to = current_app.config['BLOG_ADMIN']
+        mail_to = current_app.config['HomeTech_ADMIN']
         message = form.body.data
         send_email(mail_to, 'Message From Users', 'mail/contact', message=message)
         return redirect(url_for('.contact'))
