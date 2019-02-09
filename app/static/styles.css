@@ -125,7 +125,7 @@ div.flask-pagedown-preview h3 {
 }
 
 .profile-image{
-  max-width:95%;
+  width:100%;
   min-width:150px;
   height:auto;
 
