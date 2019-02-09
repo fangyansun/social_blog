@@ -4,17 +4,18 @@
 {% block page_content %}
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-6" role="main">
+      <div class="col-sm-6" role="main">
 
         <div class="profile-container">
             <img class="profile-image" data-image-role="target" src="static/images/Fangyan1.jpg" class="img-rounded" alt="">
             <p align="left"> Fangyan comes from China. At the age of 19, she got an opportunity to come to France for studies. Then comes her 8-year adventure in France and some other countries.</p>
             <p align="left"> Hobbies: singing, cycling, coding</p>
             <a href= "https://www.linkedin.com/in/fangyan-sun-ab529587/"> Linkedin </a>
+            <a href= "https://www.youtube.com/watch?v=lyvMgxKxldU&t=27s"> Youtube </a>
         </div>
       </div>
 
-      <div class="col-md-6" role="main">
+      <div class="col-sm-6" role="main">
         <div class="profile-container">
             <img class="profile-image" data-image-role="target" src="static/images/Vincent1.jpg" alt="">
             <p align="left"> Vincent comes from France. XXX</p>
@@ -25,8 +26,10 @@
     </div>
 
     <div class="row">
-      <div class="contact_form">
-        {{ wtf.quick_form(form) }}
+      <div class="col-md-9" role="main">
+        <div class="contact_form">
+          {{ wtf.quick_form(form) }}
+        </div>
       </div>
     </div>
 
