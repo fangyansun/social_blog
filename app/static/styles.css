@@ -116,9 +116,31 @@ div.flask-pagedown-preview h3 {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.profile-image{
-  width: 95%;
+.profile-container{
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.profile-image-frame {
+  position: relative;
+  text-align: center;
+}
+
+.profile-image{
+  width: 100%;
+  border: 1px solid rgb(100%, 100%, 100%);
+  border: 1px solid rgba(100%, 100%, 100%, 0.8);
+  margin: 4px;
+  padding: 6px;
+}
+
+.profile-text{
+  margin: 4px;
+  padding: 6px;
+}
+
 
 div.contact_form{
   margin-top: 100px;
