@@ -45,6 +45,9 @@ class PostForm(FlaskForm):
     body = PageDownField("What's on your mind?", validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class NewArticleForm(FlaskForm):
+    submit = SubmitField('Write a new article')
+
 class CommentForm(FlaskForm):
     body = StringField('Enter your comment', validators = [DataRequired()])
     submit = SubmitField('Submit')
