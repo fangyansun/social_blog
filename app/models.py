@@ -274,8 +274,8 @@ class Post(db.Model):
     body_delta = db.Column(db.Text)
     body_html = db.Column(db.Text)
     body_text = db.Column(db.Text)
-    timestamp=db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    author_id=db.Column(db.Integer, db.ForeignKey('users.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
@@ -305,9 +305,9 @@ class Post(db.Model):
         body_delta = json_post.get('body_delta')
         if body_delta is None or body_delta == '':
             raise ValidationError('post does not have a body')
-        return Post(body_delta=body_delta)
+        return Post(body_delta=body_delta, body_html=json_post.get('body_html'))
 
-db.event.listen(Post.body_delta, 'set', Post.on_changed_body)
+# db.event.listen(Post.body_delta, 'set', Post.on_changed_body)
 
 
 class Comment(db.Model):

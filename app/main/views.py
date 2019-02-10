@@ -22,16 +22,18 @@ def server_shutdown():
 def index():
     return render_template('index.html')
 
-@main.route('/articles/new', methods=['GET', 'POST'])
+@main.route('/articles/new_article', methods=['GET', 'POST'])
 def new_article():
     if request.method == 'POST':
         html = request.form.get('content_html')
         delta = request.form.get('content_delta')
+        flash('Your article has been taken into account.')
         #TO DO : sanitize data and check if not empty
         if current_user.can(Permission.WRITE):
             post = Post(body_delta = delta, body_html = html)
             db.session.add(post)
             db.session.commit()
+            flash('Your article has been published.')
             return redirect(url_for('.articles'))
         # form = PostForm()
         # if current_user.can(Permission.WRITE) and form.validate_on_submit():

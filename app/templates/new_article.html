@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Blog{% endblock %}
+
+{% block page_content %}
+  <div class="page-header">
+    <h1>New article from {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
+  </div>
+    {% if current_user.can(Permission.WRITE) %}
+      <!-- <div id="editor"></div>
+      <button id='postsubmit' onclick="launch()" type=submit class="btn btn-primary">Submit</button> -->
+      <div id="form-container" class="container">
+        <form>
+          <div id="editor"></div>
+          <button class="btn btn-primary" type="submit">Save
+        </form>
+      </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  {% if current_user.can(Permission.WRITE) %}
+  var options = {
+    theme: 'snow',
+    modules: {
+      toolbar: [[{ 'header': [1, 2, 3, 4, 5, 6, false] }], ['bold', 'italic', 'underline', 'link'], ['image'], ['clean']]
+    }
+  };
+
+  var quill = new Quill('#editor', options);
+  var form = document.querySelector('form');
+  form.onsubmit = function() {
+    var postEditor = document.querySelector('#editor');
+    var html = quill.root.innerHTML;
+    var delta = JSON.stringify(quill.getContents());
+    console.log('form submitted')
+    $.post('/articles/new_article', {
+        content_html: html,
+        content_delta: delta
+      });
+  }
+
+  // var button = document.querySelector('#postsubmit');
+  // function launch() {
+  //   // var postEditor = document.querySelector('#editor');
+  //   // var html = postEditor.children[0].innerHTML;
+  //   var delta = JSON.stringify(quill.getContents());;
+  //   var html = quill.root.innerHTML;
+  //   $.post('/articles/new_article', {
+  //     content_html: html,
+  //     content_delta: delta
+  //   });
+  // };
+  {% endif %}
+</script>
+{% endblock %}
