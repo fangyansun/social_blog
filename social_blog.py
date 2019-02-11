@@ -48,9 +48,7 @@ def test(coverage=True):
         print('HTML version: file://%s/index.html' % covdir)
         COV.erase()
 
-#@app.cli.command()
-@manager.command
-def restart_db():
+@manager.commanddef restart_db():
     """For dev purposes. Restart database from scratch"""
     db.drop_all()
     db.create_all()
