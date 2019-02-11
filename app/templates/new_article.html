@@ -49,10 +49,9 @@
 
     var html = quill.root.innerHTML;
     var delta = JSON.stringify(quill.getContents());
-  }
     var wtf_form = document.getElementById('wtf-form');
-    document.getElementById("body_html").value = html
-    document.getElementById("body_delta").value = delta
+    document.getElementById("body_html").value = html;
+    document.getElementById("body_delta").value = delta;
   }, false);
 
   // form.onclick = function() {
