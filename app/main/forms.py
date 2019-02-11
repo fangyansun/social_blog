@@ -46,7 +46,9 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class NewArticleForm(FlaskForm):
-    submit = SubmitField('Write a new article')
+    body_html = TextAreaField("HTML content", validators=[DataRequired()])
+    body_delta = TextAreaField("Delta content", validators=[DataRequired()])
+    submit = SubmitField('Publish')
 
 class CommentForm(FlaskForm):
     body = StringField('Enter your comment', validators = [DataRequired()])
