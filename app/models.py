@@ -271,6 +271,7 @@ login_manager.anonymous_user = AnonymousUser
 class Post(db.Model):
     __tablename__='posts'
     id=db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text)
     body_delta = db.Column(db.Text)
     body_html = db.Column(db.Text)
     body_text = db.Column(db.Text)
@@ -290,6 +291,7 @@ class Post(db.Model):
     def to_json(self):
         json_post = {
             'url': url_for('api.get_post', id=self.id),
+            'title': self.title,
             'body_delta': self.body_delta,
             'body_html': self.body_html,
             'body_text': self.body_text,

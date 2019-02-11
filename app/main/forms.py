@@ -46,6 +46,7 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class NewArticleForm(FlaskForm):
+    title = TextAreaField("Title", validators=[DataRequired()])
     body_html = TextAreaField("HTML content", validators=[DataRequired()])
     body_delta = TextAreaField("Delta content", validators=[DataRequired()])
     submit = SubmitField('Publish')
