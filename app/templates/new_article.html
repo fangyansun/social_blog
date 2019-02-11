@@ -10,20 +10,20 @@
   </div>
     {% if current_user.can(Permission.WRITE) %}
       <div id="form-container" class="container">
-          <div id="editor"></div>
-      </div>
-      <!-- <div style="visibility: hidden"> -->
-      <div id="wtf-form">
         <form method="post">
-          <dl>
-            <div style="display: none">
-              {{ render_field(form.body_html)}}
-              {{ render_field(form.body_delta)}}
-            </div>
-            {{ render_field(form.submit)}}
-          </dl>
+          {{ render_field(form.title)}}
+          <div id="editor"></div>
+          <div id="wtf-form">
+              <dl>
+                <div style="display: none">
+                  {{ render_field(form.body_html)}}
+                  {{ render_field(form.body_delta)}}
+                </div>
+                {{ render_field(form.submit)}}
+              </dl>
+
+          </div>
         </form>
-        <!-- {{ wtf.quick_form(form) }} -->
       </div>
     {% endif %}
 {% endblock %}

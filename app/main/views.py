@@ -39,7 +39,8 @@ def new_article():
             # return redirect(url_for('.post', id=post.id, page=-1))
     form = NewArticleForm()
     if current_user.can(Permission.WRITE) and form.validate_on_submit():
-        post = Post(body_html=form.body_html.data,
+        post = Post(title=form.title.data,
+                    body_html=form.body_html.data,
                     body_delta=form.body_delta.data,
                     author=current_user._get_current_object())
         db.session.add(post)
