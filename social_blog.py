@@ -48,7 +48,8 @@ def test(coverage=True):
         print('HTML version: file://%s/index.html' % covdir)
         COV.erase()
 
-@app.cli.command()
+#@app.cli.command()
+@manager.command
 def restart_db():
     """For dev purposes. Restart database from scratch"""
     db.drop_all()
@@ -74,4 +75,5 @@ def deploy():
     User.add_self_follows()
 
 if __name__ == '__main__':
+    #app.run(threaded = True)
     manager.run()

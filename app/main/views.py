@@ -24,24 +24,29 @@ def index():
 
 @main.route('/articles/new_article', methods=['GET', 'POST'])
 def new_article():
-    if request.method == 'POST':
-        html = request.form.get('content_html')
-        delta = request.form.get('content_delta')
-        flash('Your article has been taken into account.')
-        #TO DO : sanitize data and check if not empty
-        if current_user.can(Permission.WRITE):
-            post = Post(body_delta = delta, body_html = html)
-            db.session.add(post)
-            db.session.commit()
-            flash('Your article has been published.')
-            return redirect(url_for('.articles'))
-        # form = PostForm()
-        # if current_user.can(Permission.WRITE) and form.validate_on_submit():
-        #     post = Post(body=form.body.data, author=current_user._get_current_object())
-        #     db.session.add(post)
-        #     db.session.commit()
-        #     return redirect(url_for('.articles'))
-    return render_template('new_article.html')
+    # if request.method == 'POST':
+    #     html = request.form.get('content_html')
+    #     delta = request.form.get('content_delta')
+    #     flash('Your article has been taken into account.')
+    #     #TO DO : sanitize data and check if not empty
+    #     if current_user.can(Permission.WRITE):
+    #         post = Post(body_delta = delta, body_html = html)
+    #         db.session.add(post)
+    #         db.session.commit()
+    #         print(url_for('.articles', page = 1))
+    #         flash('Your article has been published.')
+    #         return redirect(url_for('.articles', page = 1))
+            # return redirect(url_for('.post', id=post.id, page=-1))
+    form = NewArticleForm()
+    if current_user.can(Permission.WRITE) and form.validate_on_submit():
+        post = Post(body_html=form.body_html.data,
+                    body_delta=form.body_delta.data,
+                    author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        flash('Your article has been published.')
+        return redirect(url_for('.articles'))
+    return render_template('new_article.html', form=form)
 
 @main.route('/articles')
 def articles():
