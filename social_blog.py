@@ -10,27 +10,19 @@ import click
 from flask_migrate import Migrate, MigrateCommand
 from app import create_app, db
 from app.models import User, Role, Permission, Post, Comment, Follow, AnonymousUser
-# from flask_script import Manager
-# from flask_script import Shell
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
-
 migrate = Migrate(app, db)
-# manager = Manager(app)
 
 
 @app.shell_context_processor
 def make_shell_context():
     return dict(app = app, db=db, User=User, Follow=Follow, Role=Role, Permission=Permission, Post=Post, Comment = Comment)
-# manager.add_command("shell", Shell(make_context=make_shell_context))
-# manager.add_command('db', MigrateCommand)
 
-
-#@manager.command
 @app.cli.command()
 @click.option('--coverage/--no-coverage', default=False,
               help='Run tests under code coverage.')
-def test(coverage=True):
+def test(coverage):
     """Run the unit tests."""
     if coverage and not os.environ.get('FLASK_COVERAGE'):
         import subprocess
@@ -50,9 +42,7 @@ def test(coverage=True):
         COV.html_report(directory=covdir)
         print('HTML version: file://%s/index.html' % covdir)
         COV.erase()
-# manager.add_command('test', test)
 
-# @manager.command
 @app.cli.command()
 def restart_db():
     """For dev purposes. Restart database from scratch"""
@@ -77,7 +67,3 @@ def deploy():
 
     # ensure all users are following themselves
     User.add_self_follows()
-
-# if __name__ == '__main__':
-#     #app.run(threaded = True)
-#     manager.run()
