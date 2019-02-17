@@ -46,15 +46,15 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class NewArticleForm(FlaskForm):
-    title = TextAreaField("Title", validators=[DataRequired()])
+    title = StringField("Title", validators=[DataRequired()])
     body_html = TextAreaField("HTML content", validators=[DataRequired()])
     body_delta = TextAreaField("Delta content", validators=[DataRequired()])
     submit = SubmitField('Publish')
 
 class CommentForm(FlaskForm):
-    body = StringField('Enter your comment', validators = [DataRequired()])
+    body = TextAreaField('Enter your comment', validators = [DataRequired()])
     submit = SubmitField('Submit')
 
 class ContactForm(FlaskForm):
-    body = StringField("Want to send us a message?", validators=[DataRequired()])
+    body = TextAreaField("Want to send us a message?", validators=[DataRequired()])
     submit = SubmitField('Submit')
