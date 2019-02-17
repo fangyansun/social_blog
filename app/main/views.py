@@ -123,7 +123,7 @@ def post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(body=form.body.data,
+        comment = Comment(body_text=form.body.data,
                           post=post,
                           author=current_user._get_current_object())
         db.session.add(comment)
