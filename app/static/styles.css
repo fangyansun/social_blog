@@ -1,3 +1,7 @@
+p {
+  font-size: 2vmin;
+}
+
 .navbar {
   background-color: rgb(39, 49, 49);
 }
@@ -116,13 +120,19 @@ div.flask-pagedown-preview h3 {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.profile-image{
-  min-width: 100px;
-  max-width: 500px;
-  margin: 2px;
-  padding: 6px;
+.profile-container {
+  text-align: left;
 }
 
+.profile-image{
+  width:100%;
+  min-width:150px;
+  height:auto;
+
+}
+
+
 div.contact_form{
-  margin-top: 100px;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
