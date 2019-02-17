@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% from "_macros.html" import render_field %}
 
 {% block title %}Blog{% endblock %}
 
@@ -8,12 +9,20 @@
     <h1>New article from {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
   </div>
     {% if current_user.can(Permission.WRITE) %}
-      <!-- <div id="editor"></div>
-      <button id='postsubmit' onclick="launch()" type=submit class="btn btn-primary">Submit</button> -->
       <div id="form-container" class="container">
-        <form>
+        <form method="post">
+          {{ render_field(form.title)}}
           <div id="editor"></div>
-          <button class="btn btn-primary" type="submit">Save
+          <div id="wtf-form">
+              <dl>
+                <div style="display: none">
+                  {{ render_field(form.body_html)}}
+                  {{ render_field(form.body_delta)}}
+                </div>
+                {{ render_field(form.submit)}}
+              </dl>
+
+          </div>
         </form>
       </div>
     {% endif %}
@@ -31,18 +40,48 @@
   };
 
   var quill = new Quill('#editor', options);
-  var form = document.querySelector('form');
-  form.onsubmit = function() {
-    var postEditor = document.querySelector('#editor');
+  // var form = document.querySelector('#editor-form');
+  // var form = document.querySelector('#editor-button');
+  // var postEditor = document.querySelector('#editor');
+  var submit = document.querySelector('#submit');
+
+  submit.addEventListener("click", function(e) {
+
     var html = quill.root.innerHTML;
     var delta = JSON.stringify(quill.getContents());
-    console.log('form submitted')
-    $.post('/articles/new_article', {
-        content_html: html,
-        content_delta: delta
-      });
-    flash('Your article has been taken into account.')
-  }
+    var wtf_form = document.getElementById('wtf-form');
+    document.getElementById("body_html").value = html;
+    document.getElementById("body_delta").value = delta;
+  }, false);
+
+  // form.onclick = function() {
+  //   var postEditor = document.querySelector('#editor');
+  //   var html = quill.root.innerHTML;
+  //   var delta = JSON.stringify(quill.getContents());
+  //
+  //   var wtf_form = document.getElementById('wtf-form');
+  //   document.getElementById("body_html").value = html
+  //   document.getElementById("body_delta").value = delta
+
+
+
+    // wtf_form.children[0].submit()
+    // wtf_form.submit()
+    // document.getElementById("submit")
+    // $(wtf_form).children('#body_html').value = html
+    // $("wtf-form" > "#body_html").value = html
+    // $("wtf-form" > "#body_delta").value = delta
+  // }
+  // form.onsubmit = function() {
+  //   var postEditor = document.querySelector('#editor');
+  //   var html = quill.root.innerHTML;
+  //   var delta = JSON.stringify(quill.getContents());
+  //   console.log('form submitted')
+  //   $.post('/articles/new_article', {
+  //       content_html: html,
+  //       content_delta: delta
+  //     });
+  // }
 
   // var button = document.querySelector('#postsubmit');
   // function launch() {
