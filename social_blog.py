@@ -42,6 +42,7 @@ def test(coverage):
         COV.html_report(directory=covdir)
         print('HTML version: file://%s/index.html' % covdir)
         COV.erase()
+# manager.add_command('test', test)
 
 @app.cli.command()
 def restart_db():
