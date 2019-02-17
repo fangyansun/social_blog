@@ -1,0 +1,11 @@
+venv/
+certs/
+letsencrypt/
+__pycache__/
+
+tmp/ 
+.gitignore
+
+data-dev.sqlite
+*.pyc
+config.py

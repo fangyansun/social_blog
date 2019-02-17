@@ -1,5 +1,0 @@
--r common.txt
-Faker==1.0.1
-ForgeryPy==0.1
-coverage==4.5.2
-selenium==3.141.0
