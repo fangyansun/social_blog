@@ -123,13 +123,17 @@ def post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(body_text=form.body.data,
-                          post=post,
-                          author=current_user._get_current_object())
-        db.session.add(comment)
-        db.session.commit()
-        flash('Your comment has been published.')
-        return redirect(url_for('.post', id=post.id, page=-1))
+        if current_user.can(Permission.COMMENT):
+            comment = Comment(body_text=form.body.data,
+                              post=post,
+                              author=current_user._get_current_object())
+            db.session.add(comment)
+            db.session.commit()
+            flash('Your comment has been published.')
+            redirect(url_for('.post', id=post.id, page=-1))
+        else:
+            flash('You need to sign in to comment.')
+
     page = request.args.get('page', 1, type=int)
     if page == -1:
         page = (post.comments.count() - 1) //current_app.config['BLOG_COMMENTS_PER_PAGE'] + 1
@@ -293,9 +297,13 @@ def moderate_disable(id):
 def contact():
     form = ContactForm()
     if form.validate_on_submit():
-        flash("Thank you for your message. We will come up to you soon.")
-        mail_to = current_app.config['HOMETECH_ADMIN']
-        message = form.body.data
-        send_email(mail_to, 'Message From Users', 'mail/contact', message=message)
-        return redirect(url_for('.contact'))
+        if current_user.is_authenticated:
+            flash("Thank you for your message. We will come up to you soon.")
+            mail_to = current_app.config['HOMETECH_ADMIN']
+            message = form.body.data
+            send_email(mail_to, 'Message From Users', 'mail/contact', message=message)
+            return redirect(url_for('.contact'))
+        else:
+            flash('You need to sign in to contact.')
+
     return render_template('contact.html', form = form)
