@@ -120,14 +120,14 @@ class APITestCase(unittest.TestCase):
         response = self.client.post(
             '/api/v1/posts/',
             headers=self.get_api_headers('john@example.com', 'cat'),
-            data=json.dumps({'body': ''}))
+            data=json.dumps({'body_text': ''}))
         self.assertEqual(response.status_code, 400)
 
         # write a post
         response = self.client.post(
             '/api/v1/posts/',
             headers=self.get_api_headers('john@example.com', 'cat'),
-            data=json.dumps({'body': 'body of the *blog* post'}))
+            data=json.dumps({'body_text': 'body of the *blog* post'}))
         self.assertEqual(response.status_code, 201)
         url = response.headers.get('Location')
         self.assertIsNotNone(url)
@@ -139,7 +139,7 @@ class APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual('http://localhost' + json_response['url'], url)
-        self.assertEqual(json_response['body'], 'body of the *blog* post')
+        self.assertEqual(json_response['body_text'], 'body of the *blog* post')
         self.assertEqual(json_response['body_html'],
                         '<p>body of the <em>blog</em> post</p>')
         json_post = json_response
@@ -168,11 +168,11 @@ class APITestCase(unittest.TestCase):
         response = self.client.put(
             url,
             headers=self.get_api_headers('john@example.com', 'cat'),
-            data=json.dumps({'body': 'updated body'}))
+            data=json.dumps({'body_text': 'updated body'}))
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual('http://localhost' + json_response['url'], url)
-        self.assertEqual(json_response['body'], 'updated body')
+        self.assertEqual(json_response['body_text'], 'updated body')
         self.assertEqual(json_response['body_html'], '<p>updated body</p>')
 
     def test_users(self):
@@ -212,7 +212,7 @@ class APITestCase(unittest.TestCase):
         db.session.commit()
 
         # add a post
-        post = Post(body='body of the post', author=u1)
+        post = Post(body_text='body of the post', author=u1)
         db.session.add(post)
         db.session.commit()
 
@@ -220,12 +220,12 @@ class APITestCase(unittest.TestCase):
         response = self.client.post(
             '/api/v1/posts/{}/comments/'.format(post.id),
             headers=self.get_api_headers('susan@example.com', 'dog'),
-            data=json.dumps({'body': 'Good [post](http://example.com)!'}))
+            data=json.dumps({'body_text': 'Good [post](http://example.com)!'}))
         self.assertEqual(response.status_code, 201)
         json_response = json.loads(response.get_data(as_text=True))
         url = response.headers.get('Location')
         self.assertIsNotNone(url)
-        self.assertEqual(json_response['body'],
+        self.assertEqual(json_response['body_text'],
                         'Good [post](http://example.com)!')
         self.assertEqual(
             re.sub('<.*?>', '', json_response['body_html']), 'Good post!')
@@ -237,11 +237,11 @@ class APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual('http://localhost' + json_response['url'], url)
-        self.assertEqual(json_response['body'],
+        self.assertEqual(json_response['body_text'],
                         'Good [post](http://example.com)!')
 
         # add another comment
-        comment = Comment(body='Thank you!', author=u1, post=post)
+        comment = Comment(body_text='Thank you!', author=u1, post=post)
         db.session.add(comment)
         db.session.commit()
 
