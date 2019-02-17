@@ -130,9 +130,9 @@ def post(id):
             db.session.add(comment)
             db.session.commit()
             flash('Your comment has been published.')
-            redirect(url_for('.post', id=post.id, page=-1))
+            return redirect(url_for('.post', id=post.id, page=-1))
         else:
-            flash('You need to sign in to comment.')
+            flash('You need to sign in to comment.', 'alert-danger')
 
     page = request.args.get('page', 1, type=int)
     if page == -1:
@@ -304,6 +304,6 @@ def contact():
             send_email(mail_to, 'Message From Users', 'mail/contact', message=message)
             return redirect(url_for('.contact'))
         else:
-            flash('You need to sign in to contact.')
+            flash('You need to sign in to contact.', 'alert-danger')
 
     return render_template('contact.html', form = form)
