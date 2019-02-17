@@ -19,7 +19,6 @@ migrate = Migrate(app, db)
 def make_shell_context():
     return dict(app = app, db=db, User=User, Follow=Follow, Role=Role, Permission=Permission, Post=Post, Comment = Comment)
 
-
 @app.cli.command()
 @click.option('--coverage/--no-coverage', default=False,
               help='Run tests under code coverage.')
@@ -43,3 +42,28 @@ def test(coverage):
         COV.html_report(directory=covdir)
         print('HTML version: file://%s/index.html' % covdir)
         COV.erase()
+
+@app.cli.command()
+def restart_db():
+    """For dev purposes. Restart database from scratch"""
+    db.drop_all()
+    db.create_all()
+    Role.insert_roles()
+    admin = User(email = app.config['MAIL_USERNAME'],
+                username = 'Admin',
+                password = app.config['ADMIN_PASSWORD'],
+                confirmed = True)
+    db.session.add(admin)
+    db.session.commit()
+
+@app.cli.command()
+def deploy():
+    """Run deployment tasks."""
+    # migrate database to latest revision
+    upgrade()
+
+    # create or update user roles
+    Role.insert_roles()
+
+    # ensure all users are following themselves
+    User.add_self_follows()

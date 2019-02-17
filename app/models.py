@@ -271,10 +271,12 @@ login_manager.anonymous_user = AnonymousUser
 class Post(db.Model):
     __tablename__='posts'
     id=db.Column(db.Integer, primary_key=True)
-    body=db.Column(db.Text)
+    title = db.Column(db.Text)
+    body_delta = db.Column(db.Text)
     body_html = db.Column(db.Text)
-    timestamp=db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    author_id=db.Column(db.Integer, db.ForeignKey('users.id'))
+    body_text = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
@@ -289,8 +291,10 @@ class Post(db.Model):
     def to_json(self):
         json_post = {
             'url': url_for('api.get_post', id=self.id),
-            'body': self.body,
+            'title': self.title,
+            'body_delta': self.body_delta,
             'body_html': self.body_html,
+            'body_text': self.body_text,
             'timestamp': self.timestamp,
             'author_url': url_for('api.get_user', id=self.author_id),
             'comments_url': url_for('api.get_post_comments', id=self.id),
@@ -300,18 +304,18 @@ class Post(db.Model):
 
     @staticmethod
     def from_json(json_post):
-        body = json_post.get('body')
-        if body is None or body == '':
+        body_delta = json_post.get('body_delta')
+        if body_delta is None or body_delta == '':
             raise ValidationError('post does not have a body')
-        return Post(body=body)
+        return Post(body_delta=body_delta, body_html=json_post.get('body_html'))
 
-db.event.listen(Post.body, 'set', Post.on_changed_body)
+db.event.listen(Post.body_text, 'set', Post.on_changed_body)
 
 
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
+    body_text = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     disabled = db.Column(db.Boolean)
@@ -330,7 +334,7 @@ class Comment(db.Model):
         json_comment = {
             'url': url_for('api.get_comment', id=self.id),
             'post_url': url_for('api.get_post', id=self.post_id),
-            'body': self.body,
+            'body_text': self.body_text,
             'body_html': self.body_html,
             'timestamp': self.timestamp,
             'author_url': url_for('api.get_user', id=self.author_id),
@@ -339,12 +343,12 @@ class Comment(db.Model):
 
     @staticmethod
     def from_json(json_comment):
-        body = json_comment.get('body')
-        if body is None or body == '':
+        body_text = json_comment.get('body_text')
+        if body_text is None or body_text == '':
             raise ValidationError('comment does not have a body')
-        return Comment(body=body)
+        return Comment(body_text=body_text)
 
-db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+db.event.listen(Comment.body_text, 'set', Comment.on_changed_body)
 
 
 

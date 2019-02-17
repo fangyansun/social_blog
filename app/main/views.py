@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, abort, flash, request, current_app, make_response
 from flask_login import login_required, current_user
 from . import main
-from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm, ContactForm
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm, NewArticleForm, CommentForm, ContactForm
 from .. import db
 from ..email import send_email
 from ..models import Role, User, Permission, Post, Comment
@@ -22,15 +22,35 @@ def server_shutdown():
 def index():
     return render_template('index.html')
 
-
-@main.route('/articles', methods=['GET', 'POST'])
-def articles():
-    form = PostForm()
+@main.route('/articles/new_article', methods=['GET', 'POST'])
+def new_article():
+    # if request.method == 'POST':
+    #     html = request.form.get('content_html')
+    #     delta = request.form.get('content_delta')
+    #     flash('Your article has been taken into account.')
+    #     #TO DO : sanitize data and check if not empty
+    #     if current_user.can(Permission.WRITE):
+    #         post = Post(body_delta = delta, body_html = html)
+    #         db.session.add(post)
+    #         db.session.commit()
+    #         print(url_for('.articles', page = 1))
+    #         flash('Your article has been published.')
+    #         return redirect(url_for('.articles', page = 1))
+            # return redirect(url_for('.post', id=post.id, page=-1))
+    form = NewArticleForm()
     if current_user.can(Permission.WRITE) and form.validate_on_submit():
-        post = Post(body=form.body.data, author=current_user._get_current_object())
+        post = Post(title=form.title.data,
+                    body_html=form.body_html.data,
+                    body_delta=form.body_delta.data,
+                    author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
+        flash('Your article has been published.')
         return redirect(url_for('.articles'))
+    return render_template('new_article.html', form=form)
+
+@main.route('/articles')
+def articles():
     page = request.args.get('page', 1, type=int)
     show_followed = False
     if current_user.is_authenticated:
@@ -41,8 +61,7 @@ def articles():
         query = Post.query
     pagination = query.order_by(Post.timestamp.desc()).paginate(page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('articles.html', form=form, posts=posts, show_followed = show_followed, pagination=pagination)
-
+    return render_template('articles.html', posts=posts, show_followed = show_followed, pagination=pagination)
 
 @main.route('/user/<username>')
 def user(username):
