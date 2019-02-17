@@ -309,7 +309,7 @@ class Post(db.Model):
             raise ValidationError('post does not have a body')
         return Post(body_delta=body_delta, body_html=json_post.get('body_html'))
 
-# db.event.listen(Post.body_delta, 'set', Post.on_changed_body)
+db.event.listen(Post.body_text, 'set', Post.on_changed_body)
 
 
 class Comment(db.Model):
